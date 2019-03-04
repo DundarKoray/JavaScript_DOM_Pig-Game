@@ -50,14 +50,48 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     let dice = Math.floor((Math.random() * 6) + 1);
 
     // 2. Display the result (dice)
+    let diceDOM = document.querySelector('.dice'); // so that we dont repeat
     // a. Make the dice visible again
-    let diceDOM = document.querySelector('.dice');
+    
     diceDOM.style.display = 'block';
-    diceDOM.src = `/img/dice-${dice}.png`;
+    
     // b. Show the correct dice pictures
-
+    diceDOM.src = `/img/dice-${dice}.png`;
 
     // 3. Update the round score IF the rolled number is NOT number 1. REMEMBER IF YOU GET 1, YOU LOSE ALL YOUR ROUND SCORE.
+    if (dice !== 1) {
+        // Add score (if dice is not equall to number 1)
+        roundScore = roundScore + dice;
+        document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
 
+    } else {
+        // Next player (remember if you get number 1 you loose your points and turns go to opponent )
+        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+
+        /* same as above
+        if(activePlayer === 0) {
+            activePlayer = 1;
+        } else {
+            activePlayer = 0;
+        }
+        */
+
+        // Now roundscore should be 0 because you get NUMBER 1 DICE and lost your points
+        roundScore = 0;
+        document.getElementById('current-0').textContent = '0';
+        document.getElementById('current-1').textContent = '0';
+
+        // Active class gets dark background to help identifying whos turn it is. see html, css. We must remove and add active class when players turn changes. TOGGLE: if it has active class remove it, if it doesnt have active class add it
+
+        document.querySelector('.player-0-panel').classList.toggle('active');
+        document.querySelector('.player-1-panel').classList.toggle('active');
+        //document.getElementById('player-0-panel').classList.remove('active');
+        //document.getElementById('player-1-panel').classList.add('active');
+
+        //Hide the dice
+        document.querySelector('.dice').style.display = "none";
+
+
+    }
 });
 
