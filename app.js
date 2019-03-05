@@ -17,7 +17,7 @@ scores = [0, 0];
 //This  keeps scores that is earned during the round, if the player holds then these round score will be added his total points
 roundScore = 0;
 
-//if I active player is 0, it is player 1, is activePlayer is 1, it is player 2.
+//if I active player is 0, it is player 1, if activePlayer is 1, it is player 2.
 activePlayer = 0;
 
 //Now lets create a dice. Math.random() creates numbers between 0 to 0.9. We multiply with 6 because there are 6 numbers at dice. We need to add plus one, other wise the maximum number would be 5.9 because Math.random() biggest number 0.9.  So now by addin plus 1, we have 6.9, we know wanna lower it to 6 by using floor() method.
@@ -65,8 +65,48 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
 
     } else {
+        //Nexplayer
+        nextPlayer();
+
+
+    }
+});
+
+        document.querySelector('.btn-hold').addEventListener('click', function(){
+            // Add CURRENT score to GLOBAL  when player pressed hold button
+            scores[activePlayer] = scores[activePlayer] +  roundScore;
+            //scores[activePlayer] += roundScore;
+
+            // Update the UI
+            document.querySelector(`#score-${activePlayer}`).textContent = scores[activePlayer];
+
+            // Check if the player won the game
+            if (scores[activePlayer] >= 100) {
+                document.querySelector('#name-' + activePlayer).textContent ="WINNER!";
+                document.querySelector('.dice').style.display = 'none';¨
+                document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+                document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+            } else {
+                // Next Player
+                nextPlayer();
+            }
+            
+        });
+
+
+
+
+
+
+
+
+
+
+
+        //NEXT PLAYER
+        function nextPlayer () {
         // Next player (remember if you get number 1 you loose your points and turns go to opponent )
-        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+            activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
 
         /* same as above
         if(activePlayer === 0) {
@@ -77,21 +117,18 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         */
 
         // Now roundscore should be 0 because you get NUMBER 1 DICE and lost your points
-        roundScore = 0;
-        document.getElementById('current-0').textContent = '0';
-        document.getElementById('current-1').textContent = '0';
+            roundScore = 0;
+            document.getElementById('current-0').textContent = '0';
+            document.getElementById('current-1').textContent = '0';
 
         // Active class gets dark background to help identifying whos turn it is. see html, css. We must remove and add active class when players turn changes. TOGGLE: if it has active class remove it, if it doesnt have active class add it
 
-        document.querySelector('.player-0-panel').classList.toggle('active');
-        document.querySelector('.player-1-panel').classList.toggle('active');
+            document.querySelector('.player-0-panel').classList.toggle('active');
+            document.querySelector('.player-1-panel').classList.toggle('active');
         //document.getElementById('player-0-panel').classList.remove('active');
         //document.getElementById('player-1-panel').classList.add('active');
 
         //Hide the dice
-        document.querySelector('.dice').style.display = "none";
+            document.querySelector('.dice').style.display = "none";
 
-
-    }
-});
-
+        }
